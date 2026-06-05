@@ -9,9 +9,9 @@
 [![AWS Boto3](https://img.shields.io/badge/AWS-Boto3-orange?style=for-the-badge&logo=amazon-aws)](https://aws.amazon.com/)
 [![OpenCV](https://img.shields.io/badge/OpenCV-Computer%20Vision-green?style=for-the-badge&logo=opencv)](https://opencv.org/)
 
-ZeroTouchSec introduces a novel, touchless paradigm for cloud orchestration and surveillance control. By combining computer vision, real-time hand-tracking, and cloud APIs, it allows users to trigger critical workflows—such as launching EC2 instances or setting up database environments—using physical hand gestures alone. 
+ZeroTouchSec introduces a novel, touchless paradigm for cloud orchestration and surveillance control. By combining computer vision, real-time hand-tracking, and cloud APIs, it allows users to trigger critical workflows—such as launching EC2 instances or setting up database environments—using physical hand gestures alone.
 
-This stealthy, noise-immune system is optimized for high-security environments, cyber-defense operation centers, and clean-room settings where traditional physical inputs are impractical, slow, or insecure.
+With the **v2.0 HUD Upgrade**, the application transitions from a sequential Jupyter experiment into a fully threaded, secure cyber-physical command center featuring a real-time Heads-Up Display (HUD), biometric authentication, and safety-critical gesture confirmations.
 
 ---
 
@@ -24,20 +24,18 @@ This stealthy, noise-immune system is optimized for high-security environments, 
   - [Prerequisites](#prerequisites)
   - [Installation](#installation)
   - [AWS Configuration](#aws-configuration)
-- [Usage Guide](#-usage-guide)
+- [Running the System](#-running-the-system)
 - [Why ZeroTouchSec? (Target Use Cases)](#-why-zerotouchsec-target-use-cases)
 - [Future Roadmap](#-future-roadmap)
 - [License](#-license)
 
 ---
 
-## ✨ Key Features
-- **Touchless Command Execution:** Deploy resources without keyboards, mice, or CLI commands.
-- **Stealth & Silence:** Immune to ambient acoustic noise, eavesdropping, and voice-spoofing, making it ideal for tactical or covert environments.
-- **Real-Time Hand Tracking:** Built on top of OpenCV and CVZone's robust machine learning pipeline for low-latency finger detection.
-- **Direct Cloud Integration:** Leverages AWS Boto3 to instantly provision infrastructure (EC2, RDS) straight from the video stream.
-- **Dual Control Plane:** Simultaneously maps gestures to local operating system processes (e.g., launch tools) and remote cloud infrastructure.
-- **Interactive Jupyter Shell:** Easily customizable and ideal for testing, rapid prototyping, and deployment.
+## ✨ Key Features (v2.0 Cyber-Physical HUD)
+* 🚀 **Multithreaded Execution:** Non-blocking async threads dispatch AWS API requests in the background, keeping the webcam capture frame rate running at a smooth, stable 30+ FPS.
+* 🤖 **Futuristic Cyberpunk HUD:** Semi-transparent graphic panels, active telemetry trackers, live framerate logs, and a scrolling terminal console drawn directly onto the live feed using OpenCV.
+* 🛡️ **Biometric Security Gatekeeping:** Simulates face verification with a scan overlay. The interface remains in a `LOCKED` state, rejecting gestures, until an operator is detected and authenticated.
+* ⏳ **Safety-Critical Confirmation:** Prevents accidental action triggers. Users must hold a gesture for 1.5 seconds while an interactive visual progress ring fills on screen to confirm command execution.
 
 ---
 
@@ -45,32 +43,28 @@ This stealthy, noise-immune system is optimized for high-security environments, 
 
 ```mermaid
 graph TD
-    A[Webcam / Camera Feed] -->|Frames| B[OpenCV Image Capture]
-    B -->|Pre-processed Image| C[CVZone HandDetector]
-    C -->|Detect Fingers Up| D{Gesture Recognized?}
+    A[Camera Feed] -->|Frame Stream| B[GUI & HUD Engine]
+    B -->|Frames| C[Face Authentication Engine]
+    C -->|If Verified| D[Hand Tracking Engine]
+    C -->|If Unverified| E[Lock Screen / Deny Input]
     
-    %% Gesture 1: All Fingers Up [1, 1, 1, 1, 1]
-    D -->|"[1, 1, 1, 1, 1]"| E[Gesture: Full Hand Open]
-    E -->|Trigger Local| E1[Launch Notepad]
-    E -->|Trigger Cloud| E2[AWS Boto3: Provision EC2 Instance]
+    D -->|Fingers Vector| F[Gesture State Machine]
+    F -->|Hold State < 1.5s| G[Draw Progress Ring / HUD Bar]
+    F -->|Hold State >= 1.5s| H[Trigger Command]
     
-    %% Gesture 2: Index & Middle Fingers Up [0, 1, 1, 0, 0]
-    D -->|"[0, 1, 1, 0, 0]"| F[Gesture: Peace / V-Sign]
-    F -->|Trigger Local| F1[Launch Google / Web Browser]
-    F -->|Trigger Cloud| F2[AWS Boto3: Spin Up MySQL RDS Instance]
+    H -->|Dispatch Thread| I[Async Action Executer]
+    I -->|Thread 1| J[AWS Boto3: Provision EC2 Instance]
+    I -->|Thread 2| K[AWS Boto3: Spin Up MySQL RDS Instance]
     
-    %% Default State
-    D -->|Other Gestures| G[Log: Gesture Not Mapped / Ignore]
-    
-    E2 --> H[Live Cloud Infrastructure State Updated]
-    F2 --> H
+    J -->|Response| L[HUD Console Log Screen]
+    K -->|Response| L
 ```
 
 ---
 
 ## 📊 Gesture Mapping Matrix
 
-The current implementation maps binary finger configurations to specific AWS and Local command sequences.
+The system maps hand configurations to specific AWS and Local command sequences.
 
 | Gesture | Finger State Vector | Local OS Action | AWS Cloud Automation Action |
 | :--- | :---: | :--- | :--- |
@@ -81,10 +75,10 @@ The current implementation maps binary finger configurations to specific AWS and
 
 ## ⚙️ Tech Stack
 
-- **Computer Vision:** `OpenCV-Python`, `CVZone` (MediaPipe-based hand tracking)
-- **Cloud Orchestration:** `boto3` (AWS SDK for Python)
-- **Development Environment:** Jupyter Notebooks (`ipykernel`)
-- **System Integration:** Python `os` subsystem
+* **Computer Vision:** `OpenCV-Python`, `CVZone` (MediaPipe-based hand tracking)
+* **Cloud Orchestration:** `boto3` (AWS SDK for Python)
+* **Development Environment:** Jupyter Notebooks (v1.0 Playground) & Python Script (v2.0 HUD App)
+* **Multithreading:** Python `threading` subsystem
 
 ---
 
@@ -135,18 +129,25 @@ Configure your AWS credentials locally so that Boto3 can interact with your AWS 
 
 ---
 
-## 💻 Usage Guide
+## 💻 Running the System
 
-1. **Launch the Jupyter Notebook environment:**
-   ```bash
-   jupyter notebook
-   ```
-2. Open **`zerotouchsec.ipynb`** in the Jupyter environment.
-3. Run the initialization cells to start your camera and set up the `HandDetector`.
-4. Hold up your hand to the camera to trigger automation workflows:
-   - **Show 🖐️ (All 5 fingers):** Deploys an EC2 instance.
-   - **Show ✌️ (Index and middle finger only):** Launches an RDS Instance.
-5. The notebook will automatically clean up camera resources upon completion.
+You can run ZeroTouchSec in two ways:
+
+### 1. v2.0 Production HUD Application (Recommended)
+Run the script to launch the full cyberpunk interface:
+```bash
+python app.py
+```
+- **Operator Lock:** System boots into `LOCKED` state. Show your hand 🖐️ to begin the scan and unlock the HUD.
+- **Trigger Actions:** Hold either 🖐️ (EC2) or ✌️ (RDS) for 1.5 seconds to confirm.
+- **Manual Lock:** Press `L` on the keyboard to manually lock the HUD console.
+- **Exit:** Press `Q` to close the interface safely.
+
+### 2. Jupyter Notebook Playground (v1.0)
+```bash
+jupyter notebook
+```
+Open **`zerotouchsec.ipynb`** to test individual blocks, customize API calls, or run basic tests sequentially.
 
 ---
 
