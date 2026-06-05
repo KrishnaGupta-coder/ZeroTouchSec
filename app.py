@@ -59,10 +59,10 @@ def run_system_task(task_type):
             os.system("rundll32.exe user32.dll,LockWorkStation")
             add_log("System locked successfully.")
             
-        elif task_type == "LAUNCH_BROWSER":
-            add_log("Launching YouTube...")
-            webbrowser.open("https://youtube.com")
-            add_log("Browser page opened.")
+        elif task_type == "LAUNCH_COMET":
+            add_log("Launching Comet...")
+            os.startfile(r"C:\Users\Krishna\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Comet.lnk")
+            add_log("Comet launched successfully.")
             
     except Exception as e:
         add_log(f"Error: {str(e)[:40]}")
@@ -177,7 +177,7 @@ def main():
                     ([0, 0, 0, 0, 0], "BOSS_KEY"),       # Fist ✊
                     ([1, 1, 0, 0, 0], "SCREENSHOT"),     # Gun gesture 🔫
                     ([1, 1, 1, 1, 1], "LOCK_PC"),        # Open Palm 🖐️
-                    ([0, 1, 1, 0, 0], "LAUNCH_BROWSER")   # Peace sign ✌️
+                    ([0, 1, 1, 0, 0], "LAUNCH_COMET")    # Peace sign ✌️
                 ]
                 
                 matched_task = None

@@ -54,7 +54,7 @@ graph TD
     I -->|Thread 1| J[Boss Key: Minimize All Windows]
     I -->|Thread 2| K[Screen Shooter: Take & Open Screenshot]
     I -->|Thread 3| L[Security Stop: Lock Windows Workstation]
-    I -->|Thread 4| M[Browser: Launch Web Browser]
+    I -->|Thread 4| M[Comet: Launch Comet App]
 ```
 
 ---
@@ -68,7 +68,7 @@ The system maps hand configurations to specific Local OS command sequences.
 | ✊ **Clenched Fist** | `[0, 0, 0, 0, 0]` | ✊ | **Boss Key / Panic Mode:** Minimizes all open windows instantly (`Win + D`) |
 | 🔫 **Gun Gesture** | `[1, 1, 0, 0, 0]` | 🔫 | **Screen Shooter:** Takes a desktop screenshot and opens it in the image viewer |
 | 🖐️ **Open Palm** | `[1, 1, 1, 1, 1]` | 🖐️ | **Security Stop:** Locks the Windows workstation instantly |
-| ✌️ **Peace / V-Sign** | `[0, 1, 1, 0, 0]` | ✌️ | **Web Launcher:** Opens the default browser to YouTube |
+| ✌️ **Peace / V-Sign** | `[0, 1, 1, 0, 0]` | ✌️ | **Comet Launcher:** Launches the Comet application installed on the laptop |
 
 ---
 
