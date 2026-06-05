@@ -41,7 +41,7 @@ def run_cloud_task(task_type):
     try:
         if task_type == "LAUNCH_EC2":
             if not ec2:
-                ec2 = boto3.client("ec2")
+                ec2 = boto3.client("ec2", region_name="us-east-1")
             add_log("Connecting to AWS EC2...")
             response = ec2.run_instances(
                 ImageId="ami-0c55b159cbfafe1f0", # Replace with your target AMI
@@ -55,7 +55,7 @@ def run_cloud_task(task_type):
             
         elif task_type == "LAUNCH_RDS":
             if not rds:
-                rds = boto3.client("rds")
+                rds = boto3.client("rds", region_name="us-east-1")
             add_log("Connecting to AWS RDS...")
             response = rds.create_db_instance(
                 DBName="mydb",
