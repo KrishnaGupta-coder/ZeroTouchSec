@@ -18,3 +18,7 @@ venv.bak/
 # IDE files
 .vscode/
 .idea/
+
+# Runtime screenshots
+screenshot.png
+
